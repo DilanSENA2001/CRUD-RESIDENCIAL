@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tipo_vivienda;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Validator;
 
 class TipoViviendaController extends Controller
 {
@@ -33,6 +34,18 @@ class TipoViviendaController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'nomenclatura' => 'required|unique:viviendas|max:255',
+            'body' => 'required',
+            'publish_at' => 'nullable|date',
+        ]);
+ 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+
+
         Tipo_vivienda::create($request->all());
         return redirect('tipo_vivienda');
     }

@@ -23,10 +23,18 @@
     @csrf
     @method('PUT')
   <div class="col-md-8">
-    <div class="form-group">
-      <label for="nombre">Nombre de la vivienda </label>
-      <input type="text" class="form-control" name="nombre_vivienda" value="{{$permiso->vivienda->nomenclatura}}" placeholder="Nombre de la vivienda" autofocus required>
-    </div>
+    
+  <label for="vivienda_id">vivienda</label>
+      <select name="vivienda_id" class="form-control" required>
+        <option value="">Seleccione su vivienda</option>
+        @foreach($viviendas as $vivienda)
+        @if($vivienda->id == $permiso->vivienda->id)
+        <option value="{{ $vivienda->id }}" selected>Zona {{ $vivienda->nomenclatura }}</option>
+        @else
+        <option value="{{ $vivienda->id }}">Zona {{ $vivienda->nomenclatura }}</option>
+        @endif
+        @endforeach
+      </select>
 
     <div class="form-group">
       <label for="nombre">Nombre del visitante</label>

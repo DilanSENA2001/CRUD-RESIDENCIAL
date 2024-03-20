@@ -21,8 +21,13 @@
       <td>{{$vivienda->nomenclatura}}</td>
       <td>{{$vivienda->estado}}</td>
       <td>{{$vivienda->telefono}}</td>
+      <form action="{{route('vivienda.destroy',$vivienda->id)}}" method="POST">
+        @csrf
+        @method('DELETE')
       <td> <a class="btn btn-primary float-down" href="{{route('vivienda.edit',$vivienda->id)}}">EDITAR</a></td>
-      <td><button  class="btn btn-danger">ELIMINAR</button></td>
+      <td>
+        <button class="btn btn-danger" onclick="return confirm('¿Realmente quiere eliminar el registro?')">Eliminar</td>
+        </form>
     </tr>
     @endforeach
   </tbody>

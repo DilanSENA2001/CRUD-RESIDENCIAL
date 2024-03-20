@@ -6,6 +6,7 @@ use App\Models\Bloque;
 use App\Models\Residente;
 use App\Models\Vivienda;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ViviendaController extends Controller
 {
@@ -14,7 +15,7 @@ class ViviendaController extends Controller
      */
     public function index()
     {
-        $viviendas = Vivienda::all();
+        $viviendas = Vivienda::all();   
         return view('viviendas.index',compact('viviendas'));
     }
 
@@ -24,7 +25,7 @@ class ViviendaController extends Controller
     public function create()
     {
         //
-        $bloques = Bloque::all();
+        $bloques = Bloque::where('estado', 1)->get();
         return view('viviendas.new',compact('bloques'));
     }
 
@@ -34,6 +35,19 @@ class ViviendaController extends Controller
     public function store(Request $request)
     {
         //
+                //
+                $validator = Validator::make($request->all(), [
+                    'nomenclatura' => 'required|unique:viviendas|max:255',
+                    'body' => 'required',
+                    'publish_at' => 'nullable|date',
+                ]);
+         
+                if ($validator->fails()) {
+                    return back()->withErrors($validator)
+                                 ->withInput();
+                }
+        
+
         Vivienda::create($request->all());
         return redirect('vivienda');
     }
@@ -79,8 +93,16 @@ class ViviendaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Vivienda $vivienda)
+    public function destroy(string $id)
     {
         //
+        // Bloque::destroy($id);
+
+        Vivienda::where('id', $id)->update(['estado' => 0]);
+
+        return redirect('vivienda')
+        ->with('type','danger')
+        ->with('message','Registro eliminado correctamente!');
+
     }
 }

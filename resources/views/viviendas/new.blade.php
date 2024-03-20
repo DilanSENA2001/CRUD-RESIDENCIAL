@@ -36,6 +36,9 @@
 
         <div class="form-group">
             <label for="nomenclatura">Nomenclatura</label>
+            @error('nomenclatura')
+             {{$message}}
+            @enderror
             <input type="text" class="form-control" name="nomenclatura" placeholder="Nomenclatura" required>
         </div>
 

@@ -15,7 +15,7 @@ class PaqueteController extends Controller
     public function index()
     {
         //
-        $paquetes = Paquete::all();
+        $paquetes = Paquete::where('estado', 1)->get();
         return view('paquetes.index',compact('paquetes'));
     
     }
@@ -26,7 +26,7 @@ class PaqueteController extends Controller
     public function create()
     {
         //
-        $viviendas = Vivienda::all();
+        $viviendas = Vivienda::where('estado', 1)->get();
         return view('paquetes.new', compact('viviendas')); 
         
     }
@@ -37,6 +37,18 @@ class PaqueteController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|unique:bloques|max:255',
+            'body' => 'required',
+            'publish_at' => 'nullable|date',
+        ]);
+ 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+
+ 
         Paquete::create($request->all());
         return redirect('paquete');
     }
@@ -56,7 +68,7 @@ class PaqueteController extends Controller
     {
         //
         $paquete = Paquete::find($id);
-        $viviendas = Vivienda::all();
+        $viviendas = Vivienda::where('estado', 1)->get();;
         return view('paquetes.edit', compact('paquete', 'viviendas'));
 
     }

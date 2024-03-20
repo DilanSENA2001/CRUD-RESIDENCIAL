@@ -17,7 +17,7 @@ class EventoController extends Controller
     public function index()
     {
         //
-        $eventos = Evento::all();
+        $eventos = Evento::where('estado', 1)->get();
         return view('eventos.index', compact('eventos'));
     }
 
@@ -27,7 +27,7 @@ class EventoController extends Controller
     public function create()
     {
         //
-        $eventos = Evento::all();
+        $eventos = Evento::where('estado', 1)->get();
         return view('eventos.new', compact('eventos'));
     }
 

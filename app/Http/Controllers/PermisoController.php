@@ -14,7 +14,7 @@ class PermisoController extends Controller
     public function index()
     {
         //
-        $permisos = Permiso::all();
+        $permisos = Permiso::where('estado', 1)->get();
         return view('permisos.index',compact('permisos'));
     }
 
@@ -24,7 +24,7 @@ class PermisoController extends Controller
     public function create()
     {
         //
-        $viviendas = Vivienda::all();
+        $viviendas = Vivienda::where('estado', 1)->get();
         return view('permisos.new',compact('viviendas'));
     }
 
@@ -52,8 +52,9 @@ class PermisoController extends Controller
     public function edit(string $id)
     {
         //
+        $viviendas = Vivienda::where('estado', 1)->get();
         $permiso = Permiso::find($id);
-        return view('permisos.edit', compact('permiso'));
+        return view('permisos.edit', compact('permiso', 'viviendas'));
     }
 
     /**
@@ -62,7 +63,7 @@ class PermisoController extends Controller
     public function update(Request $request, Permiso $permiso)
     {
         //
-        $datos = $request->all();
+        $datos = $request->;
         $permiso->update($datos);
 
         return redirect('permiso');

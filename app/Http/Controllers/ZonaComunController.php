@@ -13,7 +13,7 @@ class ZonaComunController extends Controller
     public function index()
     {
         //
-        $zonas_comunes = Zona_comun::all();
+        $zonas_comunes = Zona_comun::where('estado', 1)->get();
         return view('zonas_comunes.index', compact('zonas_comunes'));
     }
 
@@ -23,7 +23,7 @@ class ZonaComunController extends Controller
     public function create()
     {
         //
-        $zonas_comunes = Zona_comun::all();
+        $zonas_comunes = Zona_comun::where('estado', 1)->get();
         return view('zonas_comunes.new ', compact('zonas_comunes'));
 
     }
@@ -74,8 +74,8 @@ class ZonaComunController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        Zona_comun::destroy($id);
+        // Zona_comun::destroy($id);
+        Zona_comun::where('id', $id)->update(['estado' => 0]);
 
         return redirect('zona_comun')
         ->with('type','danger')

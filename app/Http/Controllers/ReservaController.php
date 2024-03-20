@@ -15,7 +15,7 @@ class ReservaController extends Controller
     public function index()
     {
         //
-        $reservas = Reserva::all();
+        $reservas = Reserva::where('estado', 1)->get();
         return view('reservas.index', compact('reservas'));
     }
 
@@ -25,8 +25,8 @@ class ReservaController extends Controller
     public function create()
     {
         //
-        $zonas_comunes = Zona_comun::all();
-        $residentes = Residente::all();
+        $zonas_comunes = Zona_comun::where('estado', 1)->get();
+        $residentes = Residente::where('estado', 1)->get();
         return view('reservas.new', compact('zonas_comunes', 'residentes'));
     }
 
@@ -56,7 +56,7 @@ class ReservaController extends Controller
     {
         //
 
-        $zonas_comunes = Zona_comun::all();
+        $zonas_comunes = Zona_comun::where('estado', 1)->get();
 
         $reserva = Reserva::find($id);
         return view('reservas.edit', compact('reserva', 'zonas_comunes'));
@@ -82,8 +82,9 @@ class ReservaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        Reserva::destroy($id);
+        //Reserva::destroy($id);
+        Reserva::where('id', $id)->update(['estado' => 0]);
+
 
         return redirect('reserva')
             ->with('type', 'danger')

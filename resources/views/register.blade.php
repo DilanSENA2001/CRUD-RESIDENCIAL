@@ -48,7 +48,8 @@
                                     </label>
                                 </div>
                                 <button type="submit" class="btn btn-primary me-2">Submit</button>
-                                <button class="btn btn-light">Cancel</button>
+                                <a class="btn btn-secondary ml-2" href="{{url('login')}}">Cancelar</a>
+
                         </div>
                     </div>
                 </div>

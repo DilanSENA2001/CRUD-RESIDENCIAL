@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bloque;
 use Illuminate\Http\Request;
+use Validator;
 
 class BloqueController extends Controller
 {
@@ -13,7 +14,7 @@ class BloqueController extends Controller
     public function index()
     {
         //
-        $bloques = Bloque::all();
+        $bloques = Bloque::where('estado', 1)->get();
         return view('bloques.index', compact('bloques'));
     }
 
@@ -23,7 +24,7 @@ class BloqueController extends Controller
     public function create()
     {
         //
-        $bloques = Bloque::all();
+        $bloques = Bloque::where('estado', 1)->get();
         return view('bloques.new', compact('bloques'));
     }
 
@@ -32,17 +33,29 @@ class BloqueController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|unique:bloques|max:255',
+            'body' => 'required',
+            'publish_at' => 'nullable|date',
+        ]);
+ 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+
         Bloque::create($request->all());
         return redirect('bloque');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Bloque $bloque)
+    public function show(Bloque $request)
     {
         //
+      
     }
 
     /**
@@ -73,7 +86,9 @@ class BloqueController extends Controller
     public function destroy(string $id)
     {
         //
-        Bloque::destroy($id);
+        // Bloque::destroy($id);
+
+        Bloque::where('id', $id)->update(['estado' => 0]);
 
         return redirect('bloque')
         ->with('type','danger')

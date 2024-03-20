@@ -9,7 +9,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PaqueteController;
 use App\Http\Controllers\ReservaController;
-use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TipoViviendaController;
 use App\Http\Controllers\ZonaComunController;
 
@@ -17,6 +16,7 @@ use App\Http\Controllers\ZonaComunController;
 use App\Models\Usuario;
 use App\Models\Vivienda;
 use App\Models\Zona_comun;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,17 +34,30 @@ use App\Models\Zona_comun;
 // });
 
 Route::get('/', function () {
+    if(Auth::check())
+        return redirect('layout');
+
     return view('login');
 });
 
 
 Route::get('/login', function () {
+    if(Auth::check())
+        return redirect('layout');
     return view('login');
 });
+
 
 Route::get('/register', function () {
     return view('register');
 });
+
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect('login');
+});
+
+Route::post('/check', [LoginController::class, 'check']);
 
 Route::post('/register', [LoginController::class, 'register']);
 
@@ -218,3 +231,4 @@ Route::resource('tipo_vivienda', TipoViviendaController::class);
 Route::resource('reserva', ReservaController::class);
 
 Route::resource('zona_comun', ZonaComunController::class);
+

@@ -25,7 +25,10 @@
  
   <div class="form-group">
       <label for="nombre">Nombre de nuevo bloque</label>
-      <input type="text" class="form-control" name="nombre" placeholder="nombre del bloque">
+      <input type="text" class="form-control" name="nombre" placeholder="nombre del bloque" value="{{ old('nombre') }}">
+    @error('nombre')
+      {{ $message}}
+      @enderror
     </div>
 
   <div class="d-flex justify-content-between mt-3">

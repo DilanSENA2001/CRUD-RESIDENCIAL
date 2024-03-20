@@ -16,7 +16,7 @@ class ResidenteController extends Controller
     public function index()
     {
         //
-        $residentes = Residente::all();
+        $residentes = Residente::where('estado', 1)->get();
         return view('residentes.index', compact('residentes'));
     }
 
@@ -26,7 +26,7 @@ class ResidenteController extends Controller
     public function create()
     {
         //
-        $viviendas = Vivienda::all();
+        $viviendas = Vivienda::where('estado', 1)->get();
         return view('residentes.new', compact('viviendas'));
     }
 
@@ -51,7 +51,7 @@ class ResidenteController extends Controller
 
 
 
-        Residente::create($request->all());
+        Residente::create($request->where('estado', 1)->get());
         return redirect('residente ');
     }
 
@@ -71,7 +71,7 @@ class ResidenteController extends Controller
     public function edit(string $id)
     {
         //
-        $viviendas = Vivienda::all();
+        $viviendas = Vivienda::where('estado', 1)->get();
         $residente = Residente::find($id);
         return view(('residentes.edit'), compact('residente', 'viviendas'));
     }
@@ -97,8 +97,14 @@ class ResidenteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Residente $residentes)
+    public function destroy(string $id)
     {
         //
+        Residente::where('id', $id)->update(['estado' => 0]);
+
+        return redirect('residente')
+        ->with('type','danger')
+        ->with('message','Registro eliminado correctamente!');
+
     }
 }

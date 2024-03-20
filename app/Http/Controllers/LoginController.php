@@ -4,10 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\User;
+
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Hash;
+
 class LoginController extends Controller
 {
     //
     public function register(Request $datos){ 
-        dd($datos->all);
+
+        $usuario['nombre'] = ucwords(strtolower($datos->get('nombre')));
+        $usuario['email'] =  strtolower($datos->get('email'));
+        $usuario['password'] = Hash::make($datos->get('password'));
+
+        User::create($usuario);
+        return redirect('login');
+
     }
-}
+
+    public function check(Request $datos){
+        if (Auth::attempt($datos->except('_token'))) {
+            $datos->session()->regenerate();
+ 
+            return redirect()->intended('residente');
+        }
+ 
+        return back()->withErrors([
+            'email' => 'Los datos no son correctos, por favor ingreselos de nuevo.',
+        ])->onlyInput('email');
+    }
+
+    }
+
