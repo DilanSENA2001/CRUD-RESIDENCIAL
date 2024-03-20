@@ -24,6 +24,7 @@ class TipoViviendaController extends Controller
     public function create()
     {
         //
+        
         $tipos_viviendas = Tipo_vivienda::all();
         return view('tipos_viviendas.new', compact('tipos_viviendas'));
     }
